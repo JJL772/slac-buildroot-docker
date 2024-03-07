@@ -1,4 +1,12 @@
 FROM rockylinux:9
 
-RUN sudo dnf install make gcc gcc-c++ automake m4 autoconf git wget
+RUN dnf install -y make gcc gcc-c++ automake m4 autoconf git wget
 
+RUN mkdir -p /build
+COPY . /build/
+
+RUN ls /build
+
+ARG BUILDROOT_VERSION=2019.08
+ARG BUILDROOT_ARCH=x86_64
+RUN /build/buildroot/setup.sh -v ${BUILDROOT_VERSION} -a ${BUILDROOT_ARCH}
