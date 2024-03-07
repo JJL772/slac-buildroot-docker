@@ -1,0 +1,4 @@
+FROM rockylinux:9
+
+RUN sudo dnf install make gcc gcc-c++ automake m4 autoconf git wget
+
