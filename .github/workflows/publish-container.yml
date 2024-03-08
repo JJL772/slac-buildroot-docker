@@ -1,0 +1,33 @@
+name: Publish Container
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build_containers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['2019.08']
+        arch: ['x86_64', 'i686', 'zynq']
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Container
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          file: ./Dockerfile.buildroot
+          tags: jjl772/slac-buildroot:${{ matrix.version }}-${{ matrix.arch }}
+          context: .
+          build-args: |
+            BUILDROOT_VERSION=${{ matrix.version }}
+            BUILDROOT_ARCH=${{ matrix.arch }}
