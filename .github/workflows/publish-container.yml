@@ -26,7 +26,7 @@ jobs:
         with:
           push: true
           file: ./Dockerfile.buildroot
-          tags: jjl772/slac-buildroot:${{ matrix.version }}-${{ matrix.arch }}
+          tags: ghcr.io/jjl772/slac-buildroot:${{ matrix.version }}-${{ matrix.arch }}
           context: .
           build-args: |
             BUILDROOT_VERSION=${{ matrix.version }}
