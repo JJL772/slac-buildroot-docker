@@ -4,9 +4,6 @@ set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-VERSION=
-ARCH=
-
 while [ -n "$1" ]; do
     case "$1" in 
     -v)
@@ -16,6 +13,10 @@ while [ -n "$1" ]; do
     -a)
         ARCH="$2"
         shift 2
+        ;;
+    --download-only)
+        DOWNLOADONLY=1
+        shift
         ;;
     *)
         echo "Invalid option $a"
@@ -58,6 +59,10 @@ if [ ! -d "$DIR" ]; then
     mv "$FILE" "$DIR"
 fi
 
+if [ $DOWNLOADONLY -eq 1 ]; then
+    exit 0
+fi
+
 # Make required symlinks
 if [ ! -f "$DIR/site" ]; then
     pushd "$DIR" > /dev/null
@@ -65,9 +70,20 @@ if [ ! -f "$DIR/site" ]; then
     popd > /dev/null
 fi
 
-# Apply patches and build
+export FORCE_UNSAFE_CONFIGURE=1
+
 pushd "$DIR" > /dev/null
-make print-version
-./site/br-installconf.sh -a $ARCH -f -p
-make -j$(nproc)
+
+# HACK! first call to print-version fails, after which it generates the required files. Eat the error and continue
+make print-version 2> /dev/null || true
+make defconfig
+
+./site/scripts/br-installconf.sh -a $ARCH -f
+
+# Undo a hack we did earlier. Re-order such that make is out of path
+export PATH="/usr/bin:/bin:/sbin:$PATH"
+
+# Build the toolchain *only*. That's what we care about :)
+make toolchain -j$(nproc)
+
 popd > /dev/null
