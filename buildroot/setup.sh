@@ -30,8 +30,8 @@ if [ -z $VERSION ]; then
     exit 1
 fi
 
-if [ "$ARCH" != "arm_zynq" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "x86_64" ]; then
-    echo "$ARCH is not a valid arch choice, valid options are i686, x86_64, arm_zynq"
+if [ "$ARCH" != "zynq" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "x86_64" ]; then
+    echo "$ARCH is not a valid arch choice, valid options are i686, x86_64, zynq"
     exit 1
 fi
 
@@ -59,7 +59,7 @@ if [ ! -d "$DIR" ]; then
     mv "$FILE" "$DIR"
 fi
 
-if [ $DOWNLOADONLY -eq 1 ]; then
+if [ "$DOWNLOADONLY" == "1" ]; then
     exit 0
 fi
 
