@@ -18,6 +18,14 @@ while [ -n "$1" ]; do
         DOWNLOADONLY=1
         shift
         ;;
+	--git)
+		REPO="$2"
+		shift 2
+		;;
+	-b)
+		REF="$2"
+		shift 2
+		;;
     *)
         echo "Invalid option $a"
         exit 1
@@ -27,6 +35,11 @@ done
 
 if [ -z $VERSION ]; then
     echo "USAGE: setup.sh 2019.08"
+	echo "  -v <version>      - Version to build (i.e. 2019.08)"
+	echo "  -a <arch>         - Arch to build for"
+	echo "  --download-only   - Only download and do basic setup, don't build"
+	echo "  --git <repo>      - Clone GIT repository instead"
+	echo "  -b <branch>       - If cloning a git repo, checkout this ref after the fact"
     exit 1
 fi
 
@@ -50,24 +63,29 @@ esac
 DIR="buildroot-$VERSION-$ARCH"
 
 mkdir -p download
-if [ ! -f download/$FILE.tar.bz2 ]; then
+if [ ! -f download/$FILE.tar.bz2 ] && [ -z $REPO ]; then
     wget -O "download/$FILE.tar.bz2" "https://buildroot.org/downloads/$FILE.tar.bz2"
 fi
 
+# Extract our tarball or clone our GIT repo
 if [ ! -d "$DIR" ]; then
-    tar -xf "download/$FILE.tar.bz2"
-    mv "$FILE" "$DIR"
+	if [ -z $REPO ]; then
+	    tar -xf "download/$FILE.tar.bz2"
+    	mv "$FILE" "$DIR"
+	else
+		git clone -b "$REF" "$REPO" "$DIR" 
+	fi
 fi
 
-if [ "$DOWNLOADONLY" == "1" ]; then
-    exit 0
-fi
-
-# Make required symlinks
+# Make required symlinks for our buildroot-site
 if [ ! -f "$DIR/site" ]; then
     pushd "$DIR" > /dev/null
     ln -s ../site-top site
     popd > /dev/null
+fi
+
+if [ "$DOWNLOADONLY" == "1" ]; then
+    exit 0
 fi
 
 export FORCE_UNSAFE_CONFIGURE=1
