@@ -1,7 +1,8 @@
-FROM rockylinux:9
+#FROM rockylinux:9
+FROM fedora:30
 
 RUN dnf install -y make gcc gcc-c++ automake m4 autoconf git wget bzip2 which unzip file diffutils binutils patch gzip perl cpio rsync bc findutils \
-    python
+    python3 python
 
 RUN mkdir -p /build
 
@@ -18,15 +19,11 @@ RUN cd /build/; \
     cd make-4.4.1 && ./configure --prefix="/build/host"; \
     make install
 
-# Build the requested target arch
+# Build the requested target arch and copy to the final location
 ARG BUILDROOT_VERSION=2019.08
 ARG BUILDROOT_ARCH=x86_64
-RUN PATH="/build/host/bin:$PATH" && /build/buildroot/setup.sh -v ${BUILDROOT_VERSION} -a ${BUILDROOT_ARCH} --git "https://github.com/JJL772/buildroot.git" -b ${BUILDROOT_VERSION}-gcc13-test
-
-# Copy into final location and rem build
-ARG BUILDROOT_VERSION=2019.08
-ARG BUILDROOT_ARCH=x86_64
-RUN mkdir -p /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}; \
+RUN PATH="/build/host/bin:$PATH" && /build/buildroot/setup.sh -v ${BUILDROOT_VERSION} -a ${BUILDROOT_ARCH} --git "https://github.com/JJL772/buildroot.git" -b ${BUILDROOT_VERSION}-gcc13-test; \
+    mkdir -p /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}; \
     cp -rf /build/buildroot/host /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}/host; \
     rm -rf /build
 
