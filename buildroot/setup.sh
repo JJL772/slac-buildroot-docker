@@ -22,6 +22,10 @@ while [ -n "$1" ]; do
 		REPO="$2"
 		shift 2
 		;;
+	--toolchain-only)
+		TOOLCHAIN="$2"
+		shift 2
+		;;
 	-b)
 		REF="$2"
 		shift 2
@@ -101,7 +105,12 @@ make defconfig
 # Undo a hack we did earlier. Re-order such that make is out of path
 export PATH="/usr/bin:/bin:/sbin:$PATH"
 
-# Build the toolchain *only*. That's what we care about :)
-make toolchain -j$(nproc)
+if [ "$TOOLCHAIN" == "1" ]; then
+	# Build the toolchain *only*. That's what we care about :)
+	make toolchain -j$(nproc)
+else
+	# Build everything
+	make -j$(nproc)
+fi
 
 popd > /dev/null
