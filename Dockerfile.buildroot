@@ -26,4 +26,6 @@ ARG TOOLCHAIN_ONLY=1
 RUN PATH="/build/host/bin:$PATH" && /build/buildroot/setup.sh -v ${BUILDROOT_VERSION} -a ${BUILDROOT_ARCH} --toolchain-only ${TOOLCHAIN_ONLY}; \
     mkdir -p /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}; \
     cp -rf /build/buildroot/host /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}/host; \
+	mkdir -p /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}/buildroot-${BUILDROOT_VERSION}-${BUILDROOT_ARCH}/output/images; \
+	cp -rf /build/buildroot/buildroot-${BUILDROOT_VERSION}-${BUILDROOT_ARCH}/output/images /sdf/sw/epics/package/linuxRT/buildroot-${BUILDROOT_VERSION}/buildroot-${BUILDROOT_VERSION}-${BUILDROOT_ARCH}/output/images; \
     rm -rf /build
