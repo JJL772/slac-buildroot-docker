@@ -52,7 +52,7 @@ jobs:
       - name: Extract Dist Tarball
         if: ${{ matrix.toolchain_only }} == false
         run: |
-          ./get-tarball -v ${{ matrix.version }} -r -t ${{ matrix.version }}-${{ matrix.arch }}-1
+          ./get-tarball.sh -v ${{ matrix.version }} -r -t ${{ matrix.version }}-${{ matrix.arch }}-1
       - name: Upload Dist Tarball
         if: ${{ matrix.toolchain_only }} == false
         uses: actions/upload-artifact@v4
