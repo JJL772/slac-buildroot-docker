@@ -6,16 +6,22 @@ for a in $@; do
 	--remote|r)
 		IMAGE=ghcr.io/jjl772/slac-buildroot
 		;;
+	-v)
+		VER="$2"
+		shift 2
+		;;
+	-t)
+		TAG="$2"
+		shift 2
+		;;
 	*)
 		;;
 	esac
 done
 
-function get_tarball {
-	docker run --rm -it -v "$PWD":"$PWD" -w "/sdf/sw/epics/package/linuxRT" $IMAGE:$1-$2 bash -c "tar -cf \"$PWD/slac-buildroot-$1-$2.tgz\" buildroot-$1"
-}
+docker run --rm -it -v "$PWD":"$PWD" -w "/sdf/sw/epics/package/linuxRT" $IMAGE:$TAG bash -c "tar -cf \"$PWD/buildroot-$TAG.tgz\" buildroot-$VER"
 
-get_tarball 2019.08 x86_64 
+#get_tarball 2019.08 x86_64 
 #get_tarball 2019.08 i686 
 #get_tarball 2019.08 zynq
 

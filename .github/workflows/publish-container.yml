@@ -14,6 +14,7 @@ jobs:
       matrix:
         version: ['2019.08']
         arch: ['x86_64', 'i686', 'zynq']
+        toolchain_only: [true, false]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,8 +25,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Container
+      - name: Build Toolchain in Container
         uses: docker/build-push-action@v5
+        if: ${{ matrix.toolchain_only }} == true
         with:
           push: true
           file: ./Dockerfile.buildroot
@@ -34,3 +36,26 @@ jobs:
           build-args: |
             BUILDROOT_VERSION=${{ matrix.version }}
             BUILDROOT_ARCH=${{ matrix.arch }}
+            TOOLCHAIN_ONLY=1
+      - name: Build Everything in Container
+        uses: docker/build-push-action@v5
+        if: ${{ matrix.toolchain_only }} == false
+        with:
+          push: false
+          file: ./Dockerfile.buildroot
+          tags: ghcr.io/jjl772/slac-buildroot:${{ matrix.version }}-${{ matrix.arch }}-1
+          context: .
+          build-args: |
+            BUILDROOT_VERSION=${{ matrix.version }}
+            BUILDROOT_ARCH=${{ matrix.arch }}
+            TOOLCHAIN_ONLY=0
+      - name: Extract Dist Tarball
+        if: ${{ matrix.toolchain_only }} == false
+        run: |
+          ./get-tarball -v ${{ matrix.version }} -r -t ${{ matrix.version }}-${{ matrix.arch }}-1
+      - name: Upload Dist Tarball
+        if: ${{ matrix.toolchain_only }} == false
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildroot-${{ matrix.version }}-${{ matrix.arch }}
+          path: buildroot-${{ matrix.version }}-${{ matrix.arch }}.tgz
