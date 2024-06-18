@@ -19,7 +19,7 @@ for a in $@; do
 	esac
 done
 
-docker run --rm -it -v "$PWD":"$PWD" -w "/sdf/sw/epics/package/linuxRT" $IMAGE:$TAG bash -c "tar -cf \"$PWD/buildroot-$TAG.tgz\" buildroot-$VER"
+docker run --rm -v "$PWD":"$PWD" -w "/sdf/sw/epics/package/linuxRT" $IMAGE:$TAG bash -c "tar -cf \"$PWD/buildroot-$TAG.tgz\" buildroot-$VER"
 
 #get_tarball 2019.08 x86_64 
 #get_tarball 2019.08 i686 
