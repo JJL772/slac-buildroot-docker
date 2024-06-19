@@ -82,7 +82,7 @@ if [ ! -d "$DIR" ]; then
 fi
 
 # Make required symlinks for our buildroot-site
-if [ ! -f "$DIR/site" ]; then
+if [ ! -h "$DIR/site" ]; then
     pushd "$DIR" > /dev/null
     ln -s ../site-top site
     popd > /dev/null

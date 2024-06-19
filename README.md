@@ -14,9 +14,9 @@ Replace the final bit (2019.08-x86_64) with any of the available versions and ar
 
 | Container Tag | Buildroot Version | Architecture | Notes |
 |---|---|---|---|
-| 2019.08-x86_64 | buildroot-2019.08 | x86_64 | Most IOCs target this architecture. It is used for most of our LinuxRT systems. |
-| 2019.08-i686 | buildroot-2019.08 | i686 (x86) | Used for EMCOR magnet power supplies. |
-| 2019.08-zynq | buildroot-2019.08 | ARM (Xilinx's Zynq SoCs) | |
+| 2019.08-x86_64 | buildroot-2019.08 | x86_64 | ATCA, Dell servers |
+| 2019.08-i686 | buildroot-2019.08 | i686 (x86) | EMCOR magnet power supplies |
+| 2019.08-zynq | buildroot-2019.08 | ARM (Xilinx Zynq 7000) | |
 
 NOTE: buildroot-2016.11.1 unsupported right now
 
