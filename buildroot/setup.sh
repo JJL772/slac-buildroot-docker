@@ -105,6 +105,9 @@ make defconfig
 # Undo a hack we did earlier. Re-order such that make is out of path
 export PATH="/usr/bin:/bin:/sbin:$PATH"
 
+# Really stupid hack for patch. Sometimes it gives us too many open files
+ulimit -n 8192 || true
+
 if [ "$TOOLCHAIN" == "1" ]; then
 	# Build the toolchain *only*. That's what we care about :)
 	make toolchain -j$(nproc)
