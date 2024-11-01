@@ -16,7 +16,7 @@ Replace the final bit (2019.08-x86_64) with any of the available versions and ar
 |---|---|---|---|
 | 2019.08-x86_64 | buildroot-2019.08 | x86_64 | ATCA, Dell servers |
 | 2019.08-i686 | buildroot-2019.08 | i686 (x86) | EMCOR magnet power supplies |
-| 2019.08-zynq | buildroot-2019.08 | ARM (Xilinx Zynq 7000) | RFSoC, DAQ |
+| 2019.08-zynq | buildroot-2019.08 | ARM | Test system on someone's desk, many years ago. |
 
 NOTE: buildroot-2016.11.1 unsupported right now
 
