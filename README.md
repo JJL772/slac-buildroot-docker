@@ -28,6 +28,20 @@ The top of the buildroot directory is located at `/sdf/sw/epics/package/linuxRT/
 
 For buildroot-2019.08 and x86_64, GCC would be at: `/sdf/sw/epics/package/linuxRT/buildroot-2019.08/host/linux-x86_64/x86_64/bin/x86_64-buildroot-linux-gnu-gcc`
 
+## Building and Using Images
+
+First, create the container (i.e. for i686):
+```
+./create-container.sh -a i686
+```
+
+Use `get-images.sh` to extract the images from the container:
+```
+./get-images.sh -t 2019.08 -t 2019.08-i686
+```
+
+The resulting images will be in `images/buildroot-2019.08-i686`.
+
 ## Development
 
 `Dockerfile.dev` defines a development container that can be used to compile the buildroot images. Due to the age of these images, they generally will not compile on modern Linux distros, but they will build in
