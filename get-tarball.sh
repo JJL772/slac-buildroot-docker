@@ -20,4 +20,9 @@ for a in $@; do
 	esac
 done
 
+if [ -z "$TAG" ] || [ -z "$VER" ]; then
+	echo "-t and -v are required"
+	exit 1
+fi
+
 docker run --rm -v "$PWD":"$PWD" -w "/sdf/sw/epics/package/linuxRT" "$IMAGE:$TAG" bash -c "tar -cf \"$PWD/buildroot-$TAG.tgz\" buildroot-$VER"

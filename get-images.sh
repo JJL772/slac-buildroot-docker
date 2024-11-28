@@ -31,6 +31,7 @@ done
 
 if [ -z "$VER" ] || [ -z "$TAG" ]; then
     echo "-a and -v and -t are required"
+	exit 1
 fi
 
 mkdir -p "$TOP/images/buildroot-$TAG"
