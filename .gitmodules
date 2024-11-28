@@ -1,3 +1,3 @@
 [submodule "buildroot/site-top"]
 	path = buildroot/site-top
-	url = git@github.com:slaclab/buildroot-site.git
+	url = https://github.com/slaclab/buildroot-site.git
