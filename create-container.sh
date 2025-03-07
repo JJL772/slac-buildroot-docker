@@ -2,6 +2,7 @@
 set -e
 
 ARCHES="x86_64 i686 arm"
+VER="2019.08"
 
 while test $# -gt 0; do
     case $1 in
@@ -39,6 +40,6 @@ function do_build {
 }
 
 for a in $ARCH; do
-    echo "Building for $a"
-    do_build "2019.08" $a
+    echo "Building for $VER-$a"
+    do_build "$VER" $a
 done
